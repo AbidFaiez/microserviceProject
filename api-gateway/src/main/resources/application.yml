@@ -28,7 +28,7 @@ spring:
         - id: evaluation-service
           uri: lb://evaluation-service
           predicates:
-            - Path=/evaluation/**
+            - Path=/evaluations/**
         - id: node-service
           uri: lb://node-service
           predicates:
