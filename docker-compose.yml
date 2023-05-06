@@ -1,4 +1,4 @@
-version: "2.2"
+version: "3.8"
 services:
     Candidate:
       container_name: candidate-service
@@ -8,10 +8,13 @@ services:
       hostname: candidate
       environment:
         - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+        - SPRING_CLOUD_CONFIG_URI=http://configserver:8888/
+
       image: "candidate-service"
       depends_on:
         - Eureka
         - Mongo
+        - configserver
 
 
     Candidature:
@@ -109,7 +112,15 @@ services:
       image: "eureka-server"
       environment:
         - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
-
+    configserver:
+      container_name: configserver
+      build: ./configserver
+      ports:
+        - "8888:8888"
+      hostname: configserver
+      image: "configserver"
+      environment:
+        - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
     Mongo:
         container_name: Mongo
         image: "mongo:5-focal"
